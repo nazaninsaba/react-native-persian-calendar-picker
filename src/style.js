@@ -65,14 +65,13 @@ function makeStyles({
 
     dayLabelsWrapper: {
       flexDirection: isRTL ? 'row-reverse' : 'row',
-      borderBottomWidth: 1,
       borderTopWidth: 1,
       paddingTop: 10 * scaler,
       paddingBottom: 10 * scaler,
       alignSelf: 'center',
       justifyContent: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.0)',
-      borderColor: 'rgba(0, 0, 0, 0.2)',
+      borderColor: '#f2f2f3',
     },
 
     daysWrapper: {
@@ -204,3 +203,4 @@ function makeStyles({
 }
 
 module.exports = makeStyles;
+
