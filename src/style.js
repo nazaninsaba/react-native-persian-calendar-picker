@@ -82,7 +82,7 @@ function makeStyles({
     dayLabels: {
       width: 50 * scaler,
       fontSize: 12 * scaler,
-      color: '#000',
+      color: '#9c9fa6',
       textAlign: 'center',
     },
 
@@ -150,6 +150,7 @@ function makeStyles({
     monthLabel: {
       fontSize: 16 * scaler,
       color: '#000',
+      
       marginBottom: 10 * scaler,
       width: 180 * scaler,
       textAlign: 'center',
