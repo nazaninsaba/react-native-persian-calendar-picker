@@ -9,7 +9,8 @@
 
 const React = require('react');
 const jMoment = require('moment-jalaali');
-const { Dimensions, View,Text , TouchableOpacity} = require('react-native');
+const { Dimensions, View,Text , TouchableOpacity, } = require('react-native');
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const DaysGridView = require('./days-grid');
 const HeaderControls = require('./header-controls');
@@ -392,10 +393,12 @@ class PersianCalendarPicker extends React.Component {
     }
 
     return (
-      <Swiper
+      
+        <Swiper
         onSwipe={direction => this.props.enableSwipe && this.onSwipe(direction)}
         config={{ ..._swipeConfig, ...swipeConfig }}
       >
+        <TouchableWithoutFeedback onPress={()=>this.setState({showMounth:false, showYear:false})}>
         <View syles={styles.calendar}>
           <HeaderControls
             styles={styles}
@@ -446,6 +449,7 @@ class PersianCalendarPicker extends React.Component {
             customDatesStyles={customDatesStyles}
           />
         </View>
+         </TouchableWithoutFeedback>
 
        {this.state.showYear? <View style={{flexDirection:'row',position:'absolute', backgroundColor:'#f7f7f8', elevation:3, top:50, alignSelf:'center'}}>
            <TouchableOpacity onPress={()=>{this.selectYear(years[2])}}>
@@ -507,7 +511,9 @@ class PersianCalendarPicker extends React.Component {
         </View>
         :null} 
      </Swiper>
-    );
+   
+     
+       );
   }
 }
 
