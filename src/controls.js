@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/Feather'
 
 function Controls({ styles, textStyles, label, onPressControl }) {
   return (
-    <TouchableOpacity onPress={() => onPressControl()} style={{flexDirection:'row', alignItems:'center'}}>
+    <TouchableOpacity activeOpacity={1} onPress={() => onPressControl()} style={{flexDirection:'row', alignItems:'center'}}>
       {label=="قبلی"? <Icon name="chevron-right" size={20} style={{marginTop:-7, marginRight:5}} color={"#515763"}/>:null}
       <Text style={[styles, textStyles,{color:'#9c9fa6'}]}>{label}</Text>
      {label=="بعدی"? <Icon name="chevron-left" size={20} style={{marginTop:-7, marginLeft:5}} color={"#515763"}/>:null}
