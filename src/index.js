@@ -50,6 +50,7 @@ class PersianCalendarPicker extends React.Component {
       styles: {},
       ...this.updateScaledStyles(props),
       ...this.updateMonthYear(props.initialDate),
+
     };
     this.updateScaledStyles = this.updateScaledStyles.bind(this);
     this.updateMonthYear = this.updateMonthYear.bind(this);
@@ -63,6 +64,7 @@ class PersianCalendarPicker extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log("ijij")
     let newStyles = {};
     let doStateUpdate = false;
 
@@ -88,11 +90,12 @@ class PersianCalendarPicker extends React.Component {
         !jMoment
           .utc(prevState.selectedStartDate)
           .isSame(this.props.selectedStartDate, 'day')) ||
-      (this.props.selectedEndDate &&
+          (this.props.selectedEndDate &&
         !jMoment
           .utc(prevState.selectedEndDate)
-          .isSame(this.props.selectedEndDate, 'day'))
+          .isSame(this.props.selectedEndDate, 'day')) 
     ) {
+      
       const { selectedStartDate = null, selectedEndDate = null } = this.props;
       selectedDateRanges = {
         selectedStartDate,
@@ -144,6 +147,7 @@ class PersianCalendarPicker extends React.Component {
   }
 
   handleOnPressDay(day) {
+    this.setState({showMounth:false, showYear:false})
     const {
       currentYear,
       currentMonth,
@@ -186,6 +190,13 @@ class PersianCalendarPicker extends React.Component {
 
   handleOnPressPrevious() {
     let { currentMonth, currentYear } = this.state;
+    let{years}= this.props
+
+    if(currentYear==years[0]&&currentMonth==0){
+      console.log("year")
+    }
+
+    else {
     let previousMonth = currentMonth - 1;
     // if previousMonth is negative it means the current month is January,
     // so we have to go back to previous year and set the current month to December
@@ -210,10 +221,20 @@ class PersianCalendarPicker extends React.Component {
           .jMonth(currentMonth)
           .jDate(1),
       );
+    }
   }
 
   handleOnPressNext() {
+
+
     let { currentMonth, currentYear } = this.state;
+    let todayMounth=jMoment().jMonth()
+    let todayYear= jMoment().jYear()
+
+    if(currentYear==todayYear&&currentMonth==todayMounth){
+      console.log("year")
+    }
+    else {
     let nextMonth = currentMonth + 1;
     // if nextMonth is greater than 11 it means the current month is December,
     // so we have to go forward to the next year and set the current month to January
@@ -238,6 +259,8 @@ class PersianCalendarPicker extends React.Component {
           .jMonth(currentMonth)
           .jDate(1),
       );
+    }
+   
   }
 
   onSwipe(gestureName) {
@@ -266,6 +289,12 @@ class PersianCalendarPicker extends React.Component {
 
   selectMounth(mounth){
     let { currentMonth, currentYear } = this.state;
+    let todayMount= jMoment().jMonth()
+    let todayYear = jMoment().jYear()
+    if(todayYear==currentYear&&todayMount<mounth){
+
+    }
+    else {
     let nextMonth = mounth;
     this.setState({
       currentMonth: parseInt(nextMonth),
@@ -280,6 +309,9 @@ class PersianCalendarPicker extends React.Component {
           .jDate(1),
       );
       this.setState({showMounth:false})
+    }
+
+    
 
   }
 
@@ -391,14 +423,16 @@ class PersianCalendarPicker extends React.Component {
         maxRangeDurationTime = maxRangeDuration;
       }
     }
-
+    const todayMount= jMoment().jMonth()
+    const todayYear = jMoment().jYear()
     return (
+     
       
         <Swiper
         onSwipe={direction => this.props.enableSwipe && this.onSwipe(direction)}
         config={{ ..._swipeConfig, ...swipeConfig }}
       >
-        <TouchableWithoutFeedback onPress={()=>this.setState({showMounth:false, showYear:false})}>
+        <TouchableOpacity activeOpacity={1} onPress={()=>{this.setState({showMounth:false, showYear:false}); console.log("ujhuj")}}>
         <View syles={styles.calendar}>
           <HeaderControls
             styles={styles}
@@ -449,63 +483,63 @@ class PersianCalendarPicker extends React.Component {
             customDatesStyles={customDatesStyles}
           />
         </View>
-         </TouchableWithoutFeedback>
+         </TouchableOpacity>
 
        {this.state.showYear? <View style={{flexDirection:'row',position:'absolute', backgroundColor:'#f7f7f8', elevation:3, top:50, alignSelf:'center'}}>
-           <TouchableOpacity onPress={()=>{this.selectYear(years[2])}}>
+           <TouchableOpacity  activeOpacity={1} onPress={()=>{this.selectYear(years[2])}}>
                 <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentYear==years[2]?'#f0b90a':'transparent', color:'#000'}}>{years[2]}</Text>
             </TouchableOpacity>
-             <TouchableOpacity onPress={()=>{this.selectYear(years[1])}}>
+             <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectYear(years[1])}}>
                 <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentYear==years[1]?'#f0b90a':'transparent', color:'#000'}}>{years[1]}</Text>
             </TouchableOpacity>
-             <TouchableOpacity onPress={()=>{this.selectYear(years[0])}}>
+             <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectYear(years[0])}}>
                 <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentYear==years[0]?'#f0b90a':'transparent', color:'#000'}}>{years[0]}</Text>
             </TouchableOpacity>
         </View>:null}
 
         {this.state.showMounth? <View style={{  width:230, alignSelf:'center',alignItems:'center',position:'absolute', top:50, backgroundColor:'#f7f7f8',elevation:1}}>
             <View style={{flexDirection:'row',justifyContent:'space-between', width:230 }}>
-              <TouchableOpacity onPress={()=>{this.selectMounth(0)}}>
+              <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(0)}}>
                 <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==0?'#f0b90a':'transparent', color:'#000'}}>فروردین</Text>
               </TouchableOpacity>
-               <TouchableOpacity onPress={()=>{this.selectMounth(1)}}>
-                <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==1?'#f0b90a':'transparent', color:'#000'}}>اردیبهشت</Text>
+               <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(1)}}>
+                <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==1?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<1?"#cdcfd2":'#000'}}>اردیبهشت</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={()=>{this.selectMounth(2)}}>
-                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==2?'#f0b90a':'transparent', color:'#000'}}>خرداد</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{flexDirection:'row',justifyContent:'space-between', width:230 }}>
-              <TouchableOpacity onPress={()=>{this.selectMounth(3)}}>
-                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==3?'#f0b90a':'transparent', color:'#000'}}>تیر</Text>
-              </TouchableOpacity>
-               <TouchableOpacity onPress={()=>{this.selectMounth(4)}}>
-                <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==4?'#f0b90a':'transparent', color:'#000'}}>مرداد</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>{this.selectMounth(5)}}>
-                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==5?'#f0b90a':'transparent', color:'#000'}}>شهریور</Text>
+              <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(2)}}>
+                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==2?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<2?"#cdcfd2":'#000'}}>خرداد</Text>
               </TouchableOpacity>
             </View>
             <View style={{flexDirection:'row',justifyContent:'space-between', width:230 }}>
-              <TouchableOpacity onPress={()=>{this.selectMounth(6)}}>
-                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==6?'#f0b90a':'transparent', color:'#000'}}>مهر</Text>
+              <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(3)}}>
+                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==3?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<3?"#cdcfd2":'#000'}}>تیر</Text>
               </TouchableOpacity>
-               <TouchableOpacity onPress={()=>{this.selectMounth(7)}}>
-                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==7?'#f0b90a':'transparent', color:'#000'}}>آبان</Text>
+               <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(4)}}>
+                <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==4?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<4?"#cdcfd2":'#000'}}>مرداد</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={()=>{this.selectMounth(8)}}>
-                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==8?'#f0b90a':'transparent', color:'#000'}}>آذر</Text>
+              <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(5)}}>
+                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==5?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<5?"#cdcfd2":'#000'}}>شهریور</Text>
               </TouchableOpacity>
             </View>
             <View style={{flexDirection:'row',justifyContent:'space-between', width:230 }}>
-              <TouchableOpacity onPress={()=>{this.selectMounth(9)}}>
-                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==9?'#f0b90a':'transparent', color:'#000'}}>دی</Text>
+              <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(6)}}>
+                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==6?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<6?"#cdcfd2":'#000'}}>مهر</Text>
               </TouchableOpacity>
-               <TouchableOpacity onPress={()=>{this.selectMounth(10)}}>
-                <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==10?'#f0b90a':'transparent', color:'#000'}}>بهمن</Text>
+               <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(7)}}>
+                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==7?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<7?"#cdcfd2":'#000'}}>آبان</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={()=>{this.selectMounth(11)}}>
-                <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==11?'#f0b90a':'transparent', color:'#000'}}>اسفند</Text>
+              <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(8)}}>
+                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==8?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<8?"#cdcfd2":'#000'}}>آذر</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{flexDirection:'row',justifyContent:'space-between', width:230 }}>
+              <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(9)}}>
+                <Text style={{...textStyle,fontSize:14, width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==9?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<9?"#cdcfd2":'#000'}}>دی</Text>
+              </TouchableOpacity>
+               <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(10)}}>
+                <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==10?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<10?"#cdcfd2":'#000'}}>بهمن</Text>
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={1} onPress={()=>{this.selectMounth(11)}}>
+                <Text style={{...textStyle,fontSize:14,width:75,textAlignVertical:'center', height:48,textAlign:'center',backgroundColor:currentMonth==11?'#f0b90a':'transparent', color:todayYear==currentYear&&todayMount<11?"#cdcfd2":'#000'}}>اسفند</Text>
               </TouchableOpacity>
             </View>
         </View>
