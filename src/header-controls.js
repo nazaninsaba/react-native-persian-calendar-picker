@@ -52,12 +52,12 @@ function HeaderControls(props) {
       />
 
       <View style={{flexDirection:'row', }}>
-         <TouchableOpacity onPress={()=>handelShowMounth()}>
+         <TouchableOpacity activeOpacity={1} onPress={()=>handelShowMounth()}>
           <Text style={[styles.monthLabel, textStyle,{width:70}]} {...accessibilityProps}>
             {month} 
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>handleShowYear()}>
+        <TouchableOpacity  activeOpacity={1} onPress={()=>handleShowYear()}>
           <Text style={[styles.monthLabel, textStyle,{width:50}]} {...accessibilityProps}>
            {year}
         </Text>
